@@ -9,28 +9,32 @@ namespace Crucifixion
         public static List<string> ReadFile()
         {
             string currentDirectory = Directory.GetCurrentDirectory();
-
             string relativePath = @"..\..\..\upes.csv";
             string fullPath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
 
-            List<string> lines = new List<string>(File.ReadAllLines(fullPath));
+            string[] lines = File.ReadAllLines(fullPath);
 
-            List<string> filteredLines = new List<string>();
-
+            List<string> result = [];
             foreach (string line in lines)
             {
-                int length = line.Length;
-                if (length < 4 || length == 5 || length == 8 || length > 9)
-                {
-                    
-                }
-                else
-                {
-                    filteredLines.Add(line);
-                }
+                string convertedLine = ConvertToLowerCase(line);
+                result.Add(convertedLine);
             }
 
-            return filteredLines;
+            return result;
+        }
+
+        private static string ConvertToLowerCase(string line)
+        {
+            char[] chars = line.ToCharArray();
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (char.IsLetter(chars[i]) && char.IsUpper(chars[i]))
+                {
+                    chars[i] = char.ToLower(chars[i]);
+                }
+            }
+            return new string(chars);
         }
     }
 }
